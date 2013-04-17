@@ -17,7 +17,7 @@
  * @package utils
  * @subpackage utils.controllers.components
  */
-class UtilsComponent extends Object {
+class UtilsComponent extends Component {
 
 /**
  * Controller
@@ -26,26 +26,38 @@ class UtilsComponent extends Object {
  */ 
 	public $controller; 
 
-/**
- * Startup Callback
- *
- * @param object Controller object
- */
+	/**
+	 * Startup Callback
+	 *
+	 * @param object Controller object
+	 */
 	public function startup(&$controller) {
 		$this->controller = &$controller;
 	}
 
-/**
- * Clean html string using Cleaner helper
- *
- * @param string $text
- * @param string $settings
- * @return string
- */
+	/**
+	 * Clean html string using Cleaner helper
+	 *
+	 * @param string $text
+	 * @param string $settings
+	 * @return string
+	 */
 	public function cleanHtml($text, $settings = 'full') {
 		App::import('Helper', 'Utils.Cleaner');
 		$cleaner = & new CleanerHelper();
 		return $cleaner->clean($text, $settings);
 	}
 
+	/**
+	 * Returns a url that contains http:// if it doesn't exist.
+	 * @source http://stackoverflow.com/questions/2762061/how-to-add-http-if-its-not-exists-in-the-url
+	 * @param string $url
+	 * @return string 
+	 */
+	public function addHttp($url) {
+		 if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+			  $url = "http://" . $url;
+		 }
+		 return $url;
+	}
 }

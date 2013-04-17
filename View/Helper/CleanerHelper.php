@@ -8,6 +8,7 @@
  * @copyright Copyright 2007-2010, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+App::uses('AppHelper', 'View/Helper');
 
 /**
  * Utils Plugin
@@ -72,19 +73,16 @@ class CleanerHelper extends AppHelper {
  *
  */
 	public function __construct(View $View, $settings = array()) {
-		$this->View = $View;
-
 		foreach ($this->config['full'] as $key => $value) {
 			$this->{$key} = $value;
 		}
-
 		return parent::__construct($View, $settings);
 	}
 
 /**
  * Configuration of cleaner. possible to call separately or from clean method
  *
- * @param string $options
+ * @param string $options 
  * @return void
  */
 	public function configure($options) {
@@ -139,7 +137,7 @@ class CleanerHelper extends AppHelper {
 /**
  * Remove all unwanted tags and attributes.
  *
- * @param string $cleaned
+ * @param string $cleaned 
  * @return void
  */
 	function __remove($cleaned) {
@@ -153,7 +151,7 @@ class CleanerHelper extends AppHelper {
 /**
  * Strip a string of certain tags
  *
- * @param string $cleaned
+ * @param string $cleaned 
  * @return void
  */
 	function __tagsFilter($cleaned) {
@@ -248,8 +246,8 @@ class CleanerHelper extends AppHelper {
 /**
  * Strip a tag of certain attributes
  *
- * @param string $attributeSet
- * @param string $tag
+ * @param string $attributeSet 
+ * @param string $tag 
  * @return void
  */
 	function __filterAttr(&$attributeSet, $tag) {
@@ -305,7 +303,7 @@ class CleanerHelper extends AppHelper {
 /**
  * Check pos
  *
- * @param string $attrval
+ * @param string $attrval 
  * @return void
  */
 	function __checkPos($attrval) {
@@ -320,9 +318,9 @@ class CleanerHelper extends AppHelper {
 /**
  * Filter external image links
  *
- * @param string $tag
- * @param string $attribute
- * @param string $attributeValue
+ * @param string $tag 
+ * @param string $attribute 
+ * @param string $attributeValue 
  * @return void
  */
 	function __postFilter($tag, $attribute, &$attributeValue) {
@@ -341,8 +339,8 @@ class CleanerHelper extends AppHelper {
 /**
  * Replave all image tags
  *
- * @param string $text
- * @param boolean $showVideo
+ * @param string $text 
+ * @param boolean $showVideo 
  * @return void
  */
 	function replaceAllImageTags($text, $showVideo = true) {
@@ -358,8 +356,8 @@ class CleanerHelper extends AppHelper {
 /**
  * Convert BBCode to Javascript for video embedding
  *
- * @param string $text
- * @param boolean $show
+ * @param string $text 
+ * @param boolean $show 
  * @return void
  */
 	function bbcode2js($text, $show = true) {
@@ -373,8 +371,8 @@ class CleanerHelper extends AppHelper {
 /**
  * BB 2 JS
  *
- * @param string $text
- * @param boolean $show
+ * @param string $text 
+ * @param boolean $show 
  * @return void
  */
 	function __bb2js($text, $show = true) {
@@ -386,10 +384,11 @@ class CleanerHelper extends AppHelper {
 				}
 			}
 			if ($vid) {
-				$this->Html->script('vipers-video-quicktags', array('inline' => false));
-				$this->Html->scriptBlock('vvq_googlevideo("vvq_' . $vid . '", "325", "265", "' . $vid . '");', array('inline' => false), true);
+				$content = '';
+				$content .= $this->Html->script('vipers-video-quicktags');
+				$content .= $this->Html->scriptBlock('vvq_googlevideo("vvq_' . $vid . '", "325", "265", "' . $vid . '");', array('inline' => false), true);
 
-				$content = "<p id=\"vvq_$vid\">";
+				$content .= "<p id=\"vvq_$vid\">";
 				$content .= '<a href="http://video.google.com/videoplay?docid=' . $vid .'">';
 				$content .= 'http://video.google.com/videoplay?docid=' . $vid . '</a></p><br />';
 				if (!$show) {
@@ -410,10 +409,11 @@ class CleanerHelper extends AppHelper {
 				}
 			}
 			if ($vid) {
-				$this->Html->script('vipers-video-quicktags', array('inline' => false));
+				$content = '';
+				$this->Html->script('vipers-video-quicktags', false);
 				$this->Html->scriptBlock('vvq_youtube("vvq_' . $vid . '", "325", "271", "' . $vid . '");', array('inline' => false), true);
 
-				$content = "<p id=\"vvq_$vid\">";
+				$content .= "<p id=\"vvq_$vid\">";
 				$content .= '<a href="http://www.youtube.com/watch?v=' . $vid . '">';
 				$content .= 'http://www.youtube.com/watch?v=' . $vid . '</a></p><br />';
 				if (!$show) {

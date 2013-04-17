@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('L10n', 'I18n');
+App::import('Core', 'l10n');
 
 /**
  * Utils Plugin

@@ -139,8 +139,9 @@ class TreeHelper extends AppHelper {
             $indent = true;
         }
         $view = $this->_View;
-        if ($model === null) {
-            $model = Inflector::classify($view->params['models'][0]);
+        if ($model === null && !empty($view->request->params['models'])) {
+            $model = current($view->request->params['models']);
+            $model = $model['className'];
         }
         if (!$model) {
             $model = '_NULL_';
@@ -346,9 +347,9 @@ class TreeHelper extends AppHelper {
  * to set properties of the holding type - pass 'previous' for the 4th param
  * i.e.
  * // Hide children (2)
- * $this->Tree->addTypeAttribute('style', 'display', 'hidden');
+ * $tree->addTypeAttribute('style', 'display', 'hidden');
  * // give top level type (1) a class
- * $this->Tree->addTypeAttribute('class', 'hasHiddenGrandChildren', null, 'previous');
+ * $tree->addTypeAttribute('class', 'hasHiddenGrandChildren', null, 'previous');
  *
  * @param string $id
  * @param string $key

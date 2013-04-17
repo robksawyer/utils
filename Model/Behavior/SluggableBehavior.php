@@ -9,8 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-
-App::uses('Multibyte', 'I18n');
+App::import('Core', 'Multibyte');
+App::uses('ModelBehavior', 'Model');
 
 /**
  * Utils Plugin
@@ -87,16 +87,12 @@ class SluggableBehavior extends ModelBehavior {
 		}
 
 		$slug = $Model->data[$Model->alias][$settings['label']];
-		if (method_exists($Model, 'beforeSlugGeneration')) {
+		if (method_Exists($Model, 'beforeSlugGeneration')) {
 			$slug = $Model->beforeSlugGeneration($slug, $settings['separator']);
 		}
 
 		$settings = $this->settings[$Model->alias];
-		if (method_exists($Model, 'multibyteSlug')) {
-			$slug = $Model->multibyteSlug($slug, $settings['separator']);
-		} else {
-			$slug = $this->multibyteSlug($Model, $slug);
-		}
+		$slug = $this->multibyteSlug($Model, $slug, $settings['separator']);
 
 		if ($settings['unique'] === true || is_array($settings['unique'])) {
 			$slug = $this->makeUniqueSlug($Model, $slug);
@@ -106,6 +102,7 @@ class SluggableBehavior extends ModelBehavior {
 			$Model->whitelist[] = $settings['slug'];
 		}
 		$Model->data[$Model->alias][$settings['slug']] = $slug;
+		
 		return true;
 	}
 
@@ -115,7 +112,7 @@ class SluggableBehavior extends ModelBehavior {
  * @param object $Model
  * @param string the raw slug
  * @return string The incremented unique slug
- *
+ * 
  */
 	public function makeUniqueSlug(Model $Model, $slug = '') {
 		$settings = $this->settings[$Model->alias];
@@ -155,7 +152,7 @@ class SluggableBehavior extends ModelBehavior {
 		}
 		return $slug;
 	}
-
+	
 /**
  * Generates a slug from a (multibyte) string
  *

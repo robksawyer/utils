@@ -33,8 +33,7 @@ class TinySluggableBehavior extends ModelBehavior {
  */
 	protected $_defaults = array(
 		'tinySlug' => 'tiny_slug',
-		'codeset' => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-		'orderField' => 'created');
+		'codeset' => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
 /**
  * Initiate behavior - The Model must have a field for the tiny_slug along with a "created" field
@@ -76,7 +75,7 @@ class TinySluggableBehavior extends ModelBehavior {
 		$prev = $Model->find('first', array(
 			'contain' => array(),
 			'fields' => array("{$Model->alias}.{$Model->tinySlug}", "{$Model->alias}.created"),
-			'order' => "{$Model->alias}.{$this->settings[$Model->alias]['orderField']} DESC"));
+			'order' => "{$Model->alias}.created DESC"));
 
 		if (empty($prev)) {
 			$new = $this->settings[$Model->alias]['codeset'][0];
